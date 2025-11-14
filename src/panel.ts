@@ -5,6 +5,7 @@ export class HtmlEstructuraViewProvider implements vscode.WebviewViewProvider {
   constructor(private readonly context: vscode.ExtensionContext) {}
 
   resolveWebviewView(view: vscode.WebviewView) {
+
     view.webview.options = { enableScripts: true };
 
     view.webview.html = `
@@ -26,8 +27,7 @@ export class HtmlEstructuraViewProvider implements vscode.WebviewViewProvider {
 
         <script>
           const vscode = acquireVsCodeApi();
-
-          function sendCmd(cmd) {
+          function sendCmd(cmd){
             vscode.postMessage({ cmd });
           }
         </script>

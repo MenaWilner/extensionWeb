@@ -4,7 +4,7 @@
   "description": "Crear estructuras básicas de carpetas HTML, CSS y JS.",
   "version": "0.0.1",
   "author": "Wilner Mena Aguilar",
-  "publisher": "wilnermena",
+  "publisher": "HtmlEstructura",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -12,9 +12,10 @@
     "Other"
   ],
 
-  "main": "./dist/extension.js",
+ "main": "./out/extension.js",
 
   "activationEvents": [
+    "onStartupFinished",
     "onView:htmlEstructuraView",
     "onCommand:html-estructura.createProject",
     "onCommand:html-estructura.gitPush"
@@ -46,7 +47,8 @@
       "htmlEstructuraContainer": [
         {
           "id": "htmlEstructuraView",
-          "name": "Acciones rápidas"
+          "name": "Acciones rápidas",
+          "type": "webview"
         }
       ]
     }

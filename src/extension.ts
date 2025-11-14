@@ -5,17 +5,13 @@ import { exec } from 'child_process';
 import { HtmlEstructuraViewProvider } from './panel';
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("✔ Extensión HTML Estructura activada");
+  console.log("🟢 HTML Estructura: EXTENSIÓN ACTIVADA");
 
-  // Registrar Panel
   const provider = new HtmlEstructuraViewProvider(context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider("htmlEstructuraView", provider)
   );
 
-  // =========================
-  // COMANDO: Crear Proyecto
-  // =========================
   const createCommand = vscode.commands.registerCommand(
     "html-estructura.createProject",
     async () => {
@@ -25,16 +21,14 @@ export function activate(context: vscode.ExtensionContext) {
         canSelectMany: false
       });
 
-      if (!folder) {
-        vscode.window.showWarningMessage("⚠ No se seleccionó carpeta.");
-        return;
-      }
+      if (!folder) return;
 
       const base = folder[0].fsPath;
 
       fs.mkdirSync(path.join(base, "css"), { recursive: true });
       fs.mkdirSync(path.join(base, "js"), { recursive: true });
       fs.mkdirSync(path.join(base, "img"), { recursive: true });
+       fs.mkdirSync(path.join(base, "data"), { recursive: true });
 
       fs.writeFileSync(
         path.join(base, "index.html"),
@@ -61,23 +55,23 @@ export function activate(context: vscode.ExtensionContext) {
         path.join(base, "js", "main.js"),
         `console.log("Proyecto listo 🚀");`
       );
+       fs.writeFileSync(
+        path.join(base, "data", "datos.json"),
+        `console.log("Proyecto listo 🗒️");`
+      );
 
       vscode.window.showInformationMessage("✔ Proyecto creado correctamente.");
+
+const uri = vscode.Uri.file(base);
+await vscode.commands.executeCommand('vscode.openFolder', uri);
     }
   );
 
-  // =========================
-  // COMANDO: Git Push
-  // =========================
   const gitCommand = vscode.commands.registerCommand(
     "html-estructura.gitPush",
     async () => {
       const workspace = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-
-      if (!workspace) {
-        vscode.window.showErrorMessage("❌ No hay carpeta abierta.");
-        return;
-      }
+      if (!workspace) return;
 
       const message = await vscode.window.showInputBox({
         prompt: "Mensaje del commit",
